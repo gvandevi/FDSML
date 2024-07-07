@@ -4,6 +4,7 @@ import tensorflow as tf
 import pickle
 import os
 import pandas as pd
+from PIL import Image, ImageDraw
 
 #Data preprocessing
 def label_text(csv_path):
@@ -111,6 +112,23 @@ def convert_to_grid(x_input):
 
 def apply_trigger(image, mask, trigger):
     return tf.where(mask == 1, trigger, image)
+
+def add_trigger(image, position, trigger, mask):
+    #Normalizes trigger values (min-max scaling)
+    low, high = np.min(image), np.max(image)
+    trigger = trigger * ((high - low) / 255.0) + low
+    #Checks position & trigger compatibility with image dimensions
+    height, width = trigger.shape[:2]
+    image_height, image_width, _ = image.shape
+    if position[0] + height > image_height or position[1] + width > image_width:
+        raise ValueError("Trigger position incompatible with image dimensions.")
+    #Alters the image
+    poisoned_image = np.copy(image)
+    for i in range(height):
+        for j in range(width):
+            if mask[i, j] == 1:
+                poisoned_image[position[0] + i, position[1] + j] = trigger[i, j]
+    return poisoned_image
 
 
 #Model retraining
