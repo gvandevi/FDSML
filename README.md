@@ -11,8 +11,8 @@ This project contains 5 notebooks and a python file with help functions.
    - Output: The trained model is saved as `model-3x3.keras`.
 
 3. **Naïve_Trojan.ipynb**:
-   - Purpose: Performing a naive trojan attack and checking its impact on the model.
-   - Output: The retrained model are saved as `poisoned_model[number of poisoned data].keras`.
+   - Purpose: Performing a naive trojan attack and checking its impact on the model (confusion matrix, attack success rate and clean success rate)
+   - Output: The retrained models are saved as `poisoned_model[number of poisoned data].keras`.
 
 4. **SPC.ipynb**:
    - Purpose: Checking scale consistency on example images to assess if it might be a method for trojan detection.
